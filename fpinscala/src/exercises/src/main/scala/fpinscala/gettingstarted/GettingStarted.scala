@@ -154,6 +154,14 @@ object PolymorphicFunctions {
     go(0, 0, as.length - 1)
   }
 
+  def main(args: Array[String]): Unit = {
+    println(isSorted[Int](Array(1, 2, 3, 4, 5), _ > _))
+    println(isSorted[Int](Array(1, 2), _ > _))
+    println(isSorted[Int](Array(1), _ > _))
+    println(isSorted[Int](Array(1, 1), _ > _))
+    println(isSorted[Int](Array(2, 1), _ > _))
+  }
+
   // Exercise 2: Implement a polymorphic function to check whether
   // an `Array[A]` is sorted
   def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean = {
@@ -176,7 +184,7 @@ object PolymorphicFunctions {
   // Note that `=>` associates to the right, so we could
   // write the return type as `A => B => C`
   def curry[A, B, C](f: (A, B) => C): A => (B => C) =
-  A => (B => f(A, B))
+  A => B => f(A, B)
 
   // NB: The `Function2` trait has a `curried` method already
 
