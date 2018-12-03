@@ -106,6 +106,9 @@ object Par {
   def chooser[A, B](p: Par[A])(f: A => Par[B]): Par[B] =
     es => f(run(es)(p).get)(es)
 
+  def equal[A](p: Par[A], p2: Par[A]): Par[Boolean] =
+    map2(p, p2)(_ == _)
+
   /* Gives us infix syntax for `Par`. */
   implicit def toParOps[A](p: Par[A]): ParOps[A] = new ParOps(p)
 
