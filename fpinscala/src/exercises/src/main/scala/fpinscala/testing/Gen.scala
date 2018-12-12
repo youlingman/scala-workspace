@@ -233,9 +233,9 @@ object Gen {
   def main(args: Array[String]): Unit = {
     val rng = RNG.Simple(10000)
     val g = Gen(State(RNG.int))
-    println(g.sample)
-    listOfN(10, g).sample.run(rng)._1.foreach(println)
-    listOfN(10, boolean).sample.run(rng)._1.foreach(println)
+//    println(g.sample)
+//    listOfN(10, g).sample.run(rng)._1.foreach(println)
+//    listOfN(10, boolean).sample.run(rng)._1.foreach(println)
     val chooseProp = forAll(Gen.listOf1(Gen.choose(2, 9))) {
       ns => ns.forall(n => n >= 2 && n < 9)
     }
@@ -244,6 +244,7 @@ object Gen {
       ns => ns.forall(n => n == 42)
     }
     run(unitProp)
+    listOfN(3, g).sample.run(rng)._1.foreach(println)
   }
 }
 
