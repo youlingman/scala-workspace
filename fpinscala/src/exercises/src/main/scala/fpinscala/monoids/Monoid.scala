@@ -12,6 +12,8 @@ trait Monoid[A] {
   def zero: A
 }
 
+// 结合率：op(op(a, b), c) === op(a, op(b, c))
+// 单位元率：op(a, zero) === op(zero, a) === a
 object Monoid {
 
   val stringMonoid = new Monoid[String] {
