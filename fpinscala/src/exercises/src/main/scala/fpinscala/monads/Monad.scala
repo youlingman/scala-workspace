@@ -136,7 +136,14 @@ object Monad {
   //    } yield (n, a) :: xs).run(0)._1.reverse
   // 这里其实是利用flatMap绑定变量实现状态传递的过程
   // 感觉有点对上下文作pattern matching的感觉
-    as.foldLeft(F.unit(List[(Int, A)]()))((acc, a) => acc.flatMap(xs => getState.flatMap(n => setState(n + 1).map(_ => (n, a) :: xs)))).run(0)._1.reverse
+    as.foldLeft(F.unit(List[(Int, A)]()))((acc, a) => acc.flatMap(
+      xs =>
+        // state的flatmap其实是对状态进行串联
+        // 这里getstate是抽取State(s => (a, s))中的s进行处理
+        getState.flatMap(
+          // 这里的n就是传入的启动值，即传入run的0，然后利用setstate更新S，再利用map更新状态的值A
+          n => setState(n + 1).map(_ => (n, a) :: xs)))
+    ).run(0)._1.reverse
 
   val idMonad: Monad[Id] = new Monad[Id] {
     override def flatMap[A, B](ma: Id[A])(f: (A) => Id[B]): Id[B] = ma flatMap f
@@ -145,6 +152,10 @@ object Monad {
   }
 
   def readerMonad[R] = ???
+
+  def main(args: Array[String]): Unit = {
+    println(zipWithIndex(List(4,3,2,1)))
+  }
 }
 
 case class Id[A](value: A) {
